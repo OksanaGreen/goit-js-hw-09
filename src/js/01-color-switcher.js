@@ -10,17 +10,24 @@ const ColorChangeTime = 1000;
 let intervalID = null;
 console.log(body);
 
+const ref = {
+  days: document.querySelector('[data-days]'),
+  hours: document.querySelector('[data-hours]'),
+  minutes: document.querySelector('[data-minutes]'),
+  seconds: document.querySelector('[data-seconds]'),
+};
+
 startBtn.addEventListener('click', onStart);
 stopBtn.addEventListener('click', onStop);
 
-function onStart() {
+function onStart(evt) {
   body.style.backgroundColor = getRandomHexColor();
   startBtn.disabled = true;
   stopBtn.disabled = false;
 
   intervalID = setInterval(() => {
     body.style.backgroundColor = getRandomHexColor();
-  }, COLOR_CHANGE_TIME);
+  }, ColorChangeTime);
 }
 
 function onStop() {
