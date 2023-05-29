@@ -24,10 +24,14 @@ startBtn.addEventListener('click', onStart);
 // Вибір дати
 
 const options = {
-  enableTime: true('Вмикає засіб вибору часу'),
-  time_24hr: true('Відображає засіб вибору часу '),
-  defaultDate: new Date()('Встановлює початкові вибрані дати'),
-  minuteIncrement: 1('Регулює крок для введення хвилин'),
+  // Вмикає засіб вибору часу
+  enableTime: true,
+  // Відображає засіб вибору часу
+  time_24hr: true,
+  // Встановлює початкові вибрані дати
+  defaultDate: new Date(),
+  // Регулює крок для введення хвилин
+  minuteIncrement: 1,
   onClose(selectedDates) {
     const startDate = new Date();
     console.log(selectedDates[0]);
