@@ -10,21 +10,6 @@ const refs = {
   amountInput: document.querySelector('input[name="amount"]'),
 };
 
-function createPromise(position, delay) {
-  const shouldResolve = Math.random() > 0.3;
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (shouldResolve) {
-        resolve({ position, delay });
-        // Fulfill
-      } else {
-        reject({ position, delay });
-        // Reject
-      }
-    }, delay);
-  });
-}
-
 refs.startBtn.addEventListener('submit', onSubmit);
 
 function onSubmit(evt) {
@@ -42,15 +27,29 @@ function onSubmit(evt) {
     Notify.warning(`Enter number more than 0`);
   } else {
     for (let i = 0; i < amount; i + 1) {
-      createPromise(i, delay + step * i)
-        .then(({ position, delay }) => {
-          console.log({ position, delay });
-          Notify.success(`✅ Fulfilled promise ${position + 1} in ${delay}ms`);
-        })
-        .catch(({ position, delay }) => {
-          console.log({ position, delay });
-          Notify.failure(`❌ Rejected promise ${position + 1} in ${delay}ms`);
+      function createPromise(position, delay) {
+        const shouldResolve = Math.random() > 0.3;
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            if (shouldResolve) {
+              resolve({ position, delay });
+              // Fulfill
+            } else {
+              reject({ position, delay });
+              // Reject
+            }
+          }, delay);
         });
+      }
+      createPromise(i, delay + step * i);
+
+      new Promise.then(({ position, delay }) => {
+        console.log({ position, delay });
+        Notify.success(`✅ Fulfilled promise ${position + 1} in ${delay}ms`);
+      }).catch(({ position, delay }) => {
+        console.log({ position, delay });
+        Notify.failure(`❌ Rejected promise ${position + 1} in ${delay}ms`);
+      });
     }
   }
 }
