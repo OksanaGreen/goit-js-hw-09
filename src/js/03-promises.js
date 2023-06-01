@@ -18,7 +18,7 @@ function onSubmit(evt) {
   const step = Number(refs.stepInput.value);
   const amount = Number(refs.amountInput.value);
   console.log(delay, step, amount);
-
+  const promis = new Promise();
   startBtn.disabled = true;
 
   if (delay < 0 || step < 0 || amount < 0) {
@@ -28,7 +28,7 @@ function onSubmit(evt) {
   } else {
     for (let i = 0; i < amount; i + 1) {
       createPromise(i, delay + step * i);
-      const promis = new Promise();
+
       function createPromise(position, delay) {
         const shouldResolve = Math.random() > 0.3;
         return new Promise((resolve, reject) => {
