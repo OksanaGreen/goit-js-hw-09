@@ -10,7 +10,22 @@ const refs = {
   amountInput: document.querySelector('input[name="amount"]'),
 };
 
-refs.startBtn.addEventListener('submit', onSubmit);
+function createPromise(position, delay) {
+  const shouldResolve = Math.random() > 0.3;
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (shouldResolve) {
+        resolve({ position, delay });
+        // Fulfill
+      } else {
+        reject({ position, delay });
+        // Reject
+      }
+    }, delay);
+  });
+}
+
+refs.form.addEventListener('submit', onSubmit);
 
 function onSubmit(evt) {
   evt.preventDefault();
@@ -18,33 +33,18 @@ function onSubmit(evt) {
   const step = Number(refs.stepInput.value);
   const amount = Number(refs.amountInput.value);
   console.log(delay, step, amount);
-  const promis = new Promise();
-  startBtn.disabled = true;
+
+  // refs.startBtn.disabled = true;
 
   if (delay < 0 || step < 0 || amount < 0) {
     Notify.warning(`Enter number more than 0`);
   } else if (Number(amount) === 0) {
     Notify.warning(`Enter number more than 0`);
   } else {
-    for (let i = 0; i < amount; i + 1) {
-      createPromise(i, delay + step * i);
+    for (let i = 0; i < amount; i += 1) {
+      const promise = createPromise(i, delay + step * i);
 
-      function createPromise(position, delay) {
-        const shouldResolve = Math.random() > 0.3;
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            if (shouldResolve) {
-              resolve({ position, delay });
-              // Fulfill
-            } else {
-              reject({ position, delay });
-              // Reject
-            }
-          }, delay);
-        });
-      }
-      console.log(promis);
-      promis
+      promise
         .then(({ position, delay }) => {
           console.log({ position, delay });
           Notify.success(`✅ Fulfilled promise ${position + 1} in ${delay}ms`);
